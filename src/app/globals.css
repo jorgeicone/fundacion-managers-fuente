@@ -1,0 +1,314 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-gold: #d4a437;
+    --color-gold-hover: #bd8e2a;
+    --color-carbon: #0f1419;
+    --color-bg: #fafaf7;
+    --color-text: #1a1a1a;
+    --color-muted: #57534e;
+    --color-border: #e8e5de;
+    --color-success: #2d7a4f;
+    --color-danger: #c8362b;
+  }
+
+  [data-theme='dark'],
+  .tournament-section {
+    --color-bg: #0f1419;
+    --color-text: #fafaf7;
+    --color-muted: #a8a29e;
+    --color-border: #1f1b16;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #0b0f14;
+    color: var(--color-text);
+    font-family: var(--font-body), system-ui, -apple-system, sans-serif;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Foco visible dorado en cualquier elemento interactivo */
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: rgba(212, 164, 55, 0.3);
+    color: #fff;
+  }
+}
+
+@layer utilities {
+  /* === LIENZO OSCURO PREMIUM === */
+  .canvas-dark {
+    background:
+      radial-gradient(120% 90% at 80% -10%, rgba(212, 164, 55, 0.18) 0%, transparent 55%),
+      radial-gradient(90% 70% at 10% 110%, rgba(184, 90, 60, 0.14) 0%, transparent 55%),
+      linear-gradient(180deg, #0b0f14 0%, #0f1419 45%, #0b0f14 100%);
+  }
+
+  .canvas-cream {
+    background:
+      radial-gradient(100% 80% at 85% 0%, rgba(212, 164, 55, 0.12) 0%, transparent 55%),
+      linear-gradient(180deg, #faf5ea 0%, #f5eedf 100%);
+  }
+
+  /* Foco de luz tipo spotlight (como la lámpara del tablero) */
+  .spotlight::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      60% 50% at 50% 0%,
+      rgba(212, 164, 55, 0.22) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
+  }
+
+  /* Grano sutil para dar textura editorial */
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.45'/%3E%3C/svg%3E");
+  }
+
+  /* Línea/halo dorado divisor */
+  .rule-gold {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(212, 164, 55, 0.6) 50%,
+      transparent
+    );
+    height: 1px;
+  }
+
+  /* Texto con relleno degradado dorado */
+  .text-gold-grad {
+    background: linear-gradient(135deg, #f1c548 0%, #d4a437 45%, #a87f22 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Número gigante fantasma de fondo */
+  .ghost-number {
+    font-family: var(--font-display-sport), Impact, sans-serif;
+    line-height: 0.8;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(212, 164, 55, 0.25);
+  }
+
+  /* Energía de estadio: luz dorada/naranja intensa + viñeta */
+  .stadium {
+    background:
+      radial-gradient(95% 75% at 50% 0%, rgba(242, 194, 48, 0.22) 0%, transparent 55%),
+      radial-gradient(80% 60% at 85% 20%, rgba(232, 114, 44, 0.2) 0%, transparent 55%),
+      radial-gradient(70% 60% at 10% 90%, rgba(212, 164, 55, 0.16) 0%, transparent 55%),
+      linear-gradient(180deg, #0b0f14 0%, #11100c 50%, #0b0f14 100%);
+  }
+  .stadium-vignette::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(0, 0, 0, 0.6) 100%);
+  }
+
+  /* Texto con relleno degradado energía (amarillo→naranja) */
+  .text-energy {
+    background: linear-gradient(100deg, #FFE08A 0%, #F2C230 35%, #E8722C 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Entrada escalonada de hijos (movimiento al cargar la sección) */
+  .stagger-in > * {
+    opacity: 0;
+    animation: fade-up 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .stagger-in > *:nth-child(1) { animation-delay: 0.05s; }
+  .stagger-in > *:nth-child(2) { animation-delay: 0.12s; }
+  .stagger-in > *:nth-child(3) { animation-delay: 0.19s; }
+  .stagger-in > *:nth-child(4) { animation-delay: 0.26s; }
+  .stagger-in > *:nth-child(5) { animation-delay: 0.33s; }
+  .stagger-in > *:nth-child(6) { animation-delay: 0.4s; }
+  .stagger-in > *:nth-child(7) { animation-delay: 0.47s; }
+  .stagger-in > *:nth-child(8) { animation-delay: 0.54s; }
+
+  /* Barrido de luz que cruza un elemento (vida/movimiento) */
+  .sweep {
+    position: relative;
+    overflow: hidden;
+  }
+  .sweep::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 30%,
+      rgba(242, 194, 48, 0.14) 48%,
+      transparent 66%
+    );
+    transform: translateX(-100%);
+    animation: sweep 5.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes sweep {
+    0%, 100% { transform: translateX(-100%); }
+    55%, 70% { transform: translateX(100%); }
+  }
+
+  /* Barra de energía animada (divisores de fase) */
+  .energy-bar {
+    background: linear-gradient(90deg, #F2C230, #E8722C, #D4A437, #F2C230);
+    background-size: 300% 100%;
+    animation: energy-bar 4s linear infinite;
+  }
+  @keyframes energy-bar {
+    to { background-position: 300% 0; }
+  }
+
+  /* Línea conectora con pulso de luz */
+  .conn-pulse {
+    position: relative;
+    overflow: hidden;
+  }
+  .conn-pulse::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -40%;
+    height: 100%;
+    width: 40%;
+    background: linear-gradient(90deg, transparent, rgba(242, 194, 48, 0.9), transparent);
+    animation: conn-pulse 2.6s linear infinite;
+  }
+  @keyframes conn-pulse {
+    to { left: 120%; }
+  }
+
+  /* Marquee horizontal infinito */
+  .marquee {
+    animation: marquee 28s linear infinite;
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* Aurora animada lenta */
+  .aurora {
+    background:
+      radial-gradient(40% 60% at 20% 30%, rgba(212, 164, 55, 0.16), transparent 60%),
+      radial-gradient(40% 60% at 80% 70%, rgba(184, 90, 60, 0.14), transparent 60%);
+    animation: aurora 18s ease-in-out infinite alternate;
+  }
+
+  @keyframes aurora {
+    0% {
+      transform: translate3d(-2%, -1%, 0) scale(1);
+    }
+    100% {
+      transform: translate3d(2%, 2%, 0) scale(1.08);
+    }
+  }
+
+  /* Números monoespaciados para tablas y marcadores */
+  .tabular-nums {
+    font-feature-settings: 'tnum';
+  }
+
+  /* Fade-up al entrar en viewport (simple, CSS puro) */
+  .animate-fade-up {
+    animation: fade-up 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Brillo de la moneda dorada */
+  .coin-shimmer {
+    animation: coin-shimmer 3.6s ease-in-out infinite;
+  }
+
+  @keyframes coin-shimmer {
+    0% {
+      transform: translateX(0) skewX(-12deg);
+    }
+    60%,
+    100% {
+      transform: translateX(420%) skewX(-12deg);
+    }
+  }
+
+  /* Punto pulsante EN VIVO */
+  .pulse-live {
+    animation: pulse-live 1.8s ease-in-out infinite;
+  }
+
+  @keyframes pulse-live {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.55;
+      transform: scale(1.18);
+    }
+  }
+
+  /* Flotación sutil para la moneda en hero */
+  .float-y {
+    animation: float-y 6s ease-in-out infinite;
+  }
+
+  @keyframes float-y {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  /* Respetar prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

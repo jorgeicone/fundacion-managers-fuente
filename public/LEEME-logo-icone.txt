@@ -1,0 +1,8 @@
+Logo oficial de ICONE ialabs.
+
+Guarda aqui el archivo como:  public/logo-icone.png
+- PNG fondo TRANSPARENTE (no blanco)
+- Version para fondo OSCURO (texto/elementos claros o cyan), ancho min 1000px
+
+Cuando este, avisa: pongo USE_LOGO=true en src/components/shared/IconeBrand.tsx
+y el logo aparece en TODA la web (footer, alianza, home, ejes) automaticamente.

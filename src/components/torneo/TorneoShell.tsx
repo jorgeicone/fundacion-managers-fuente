@@ -1,0 +1,74 @@
+import { GoldCoin } from '@/components/shared/GoldCoin';
+import { TeamCrest } from '@/components/torneo/TeamCrest';
+import { TorneoBackdrop } from '@/components/torneo/TorneoBackdrop';
+import { TorneoNav } from '@/components/torneo/TorneoNav';
+import { EQUIPOS } from '@/lib/torneo-data';
+
+interface TorneoShellProps {
+  eyebrow: string;
+  title: string;
+  active: string;
+  children: React.ReactNode;
+}
+
+/** Shell común de las subpáginas: foto de fondo a pantalla completa. */
+export function TorneoShell({ eyebrow, title, active, children }: TorneoShellProps) {
+  return (
+    <div className="tournament-section relative">
+      <TorneoBackdrop seed={47} query="stadium,floodlights,night" />
+
+      <div className="relative z-10">
+        {/* HERO */}
+        <section className="relative overflow-hidden grain">
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -right-8 top-1/2 -translate-y-1/2 select-none font-sport text-[30vw] leading-none text-white/[0.04] lg:text-[230px]"
+          >
+            F7
+          </span>
+
+          <div className="relative mx-auto flex min-h-[58vh] max-w-7xl items-center justify-between gap-6 px-6 py-20 lg:px-8 lg:py-28">
+            <div className="animate-fade-up">
+              <span className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amarillo to-naranja px-4 py-1.5 font-bufon text-xs font-bold uppercase tracking-[0.18em] text-carbon">
+                {eyebrow}
+              </span>
+              <h1 className="mt-6 font-sport text-[16vw] uppercase leading-[0.85] text-neutral-50 drop-shadow-[0_6px_24px_rgba(0,0,0,0.7)] lg:text-[110px]">
+                {title}
+              </h1>
+              <div className="mt-5 h-1.5 w-32 rounded-full energy-bar" />
+            </div>
+            <div className="hidden shrink-0 lg:block">
+              <div className="float-y">
+                <GoldCoin size={170} animate />
+              </div>
+            </div>
+          </div>
+
+          {/* Marquee de equipos */}
+          <div className="relative border-y border-white/10 bg-black/40 py-4 backdrop-blur-sm">
+            <div className="flex w-max marquee gap-12 px-6">
+              {[...EQUIPOS, ...EQUIPOS].map((e, i) => (
+                <span
+                  key={`${e.slug}-${i}`}
+                  className="flex items-center gap-3 font-sport text-xl uppercase tracking-wide text-neutral-400"
+                >
+                  <TeamCrest slug={e.slug} size={24} />
+                  {e.nombre}
+                </span>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <TorneoNav active={active} />
+
+        {/* CONTENIDO (panel translúcido para que la foto se vea detrás) */}
+        <section className="relative grain">
+          <div className="relative mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-24">
+            {children}
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+}
