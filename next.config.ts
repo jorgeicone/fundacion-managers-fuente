@@ -1,7 +1,10 @@
 import type { NextConfig } from 'next';
 
 const isGhPages = process.env.GITHUB_PAGES === 'true';
-const basePath = isGhPages ? '/fundacion-managers-web' : '';
+// basePath = nombre del repo en GitHub Pages. Configurable por env para que
+// el mismo código sirva en cualquier repo (CI define PAGES_BASE_PATH).
+const basePath =
+  process.env.PAGES_BASE_PATH ?? (isGhPages ? '/fundacion-managers-web' : '');
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
