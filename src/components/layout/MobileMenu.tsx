@@ -36,7 +36,8 @@ export function MobileMenu() {
 
       {open ? (
         <div
-          className="fixed inset-0 z-50 flex flex-col bg-[#0b0f14]/98 backdrop-blur-md"
+          className="fixed inset-0 z-[100] flex flex-col"
+          style={{ backgroundColor: '#0b0f14' }}
           role="dialog"
           aria-modal="true"
           aria-label="Menú de navegación"
