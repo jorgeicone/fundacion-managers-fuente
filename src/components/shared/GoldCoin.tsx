@@ -25,11 +25,12 @@ export function GoldCoin({
   return (
     <span
       className={cn(
-        'relative inline-flex items-center justify-center overflow-hidden rounded-full',
+        'relative inline-flex aspect-square items-center justify-center overflow-hidden rounded-full',
         'drop-shadow-[0_24px_60px_rgba(212,164,55,0.45)]',
         className,
       )}
-      style={{ width: size, height: size }}
+      // Tamaño fluido: nunca más ancho que el viewport en móvil.
+      style={{ width: `min(${size}px, 62vw)` }}
     >
       <Image
         src={asset('/coin-managers.webp')}

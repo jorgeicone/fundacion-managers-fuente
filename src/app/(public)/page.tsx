@@ -55,7 +55,7 @@ export default function HomePage() {
             <div className="relative flex items-center justify-center">
               <span
                 aria-hidden
-                className="absolute h-[420px] w-[420px] rounded-full bg-gold/20 blur-[120px]"
+                className="absolute aspect-square w-[62vw] max-w-[420px] rounded-full bg-gold/20 blur-[120px]"
               />
               <div className="float-y">
                 <GoldCoin size={400} animate priority />

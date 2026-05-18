@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { GoldCoin } from '@/components/shared/GoldCoin';
+import { MobileMenu } from '@/components/layout/MobileMenu';
 import { ICONE_CYAN } from '@/lib/alianza';
 import { EJES } from '@/lib/navigation';
 
@@ -40,12 +41,15 @@ export function Header() {
           </ul>
         </nav>
 
-        <Link
-          href="/contacto/"
-          className="hidden rounded-full bg-gold px-5 py-2 text-sm font-semibold text-carbon shadow-gold transition-colors duration-200 ease-managers hover:bg-gold-hover sm:inline-flex"
-        >
-          Hablemos
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/contacto/"
+            className="hidden rounded-full bg-gold px-5 py-2 text-sm font-semibold text-carbon shadow-gold transition-colors duration-200 ease-managers hover:bg-gold-hover lg:inline-flex"
+          >
+            Hablemos
+          </Link>
+          <MobileMenu />
+        </div>
       </div>
     </header>
   );
