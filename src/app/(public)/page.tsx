@@ -16,12 +16,12 @@ export default function HomePage() {
       <div className="relative z-10 text-neutral-200">
         {/* ===== HERO ===== */}
         <section className="relative overflow-hidden grain">
-          <div className="relative mx-auto grid min-h-[78vh] max-w-7xl items-center gap-14 px-6 py-24 lg:grid-cols-[1.2fr_0.8fr] lg:px-8">
+          <div className="relative mx-auto grid min-h-[64vh] max-w-7xl items-center gap-10 px-6 py-14 sm:py-20 lg:grid-cols-[1.2fr_0.8fr] lg:gap-14 lg:px-8 lg:py-24 lg:min-h-[78vh]">
             <div className="animate-fade-up">
               <span className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amarillo to-naranja px-4 py-1.5 font-bufon text-xs font-bold uppercase tracking-[0.18em] text-carbon">
                 Fundación Managers · Ocio serio
               </span>
-              <h1 className="mt-7 font-serif text-[44px] font-bold leading-[1.02] text-neutral-50 drop-shadow-[0_6px_24px_rgba(0,0,0,0.7)] md:text-[78px]">
+              <h1 className="mt-6 font-serif text-[38px] font-bold leading-[1.05] text-neutral-50 drop-shadow-[0_6px_24px_rgba(0,0,0,0.7)] sm:text-[52px] md:text-[78px]">
                 Ayudamos a líderes a{' '}
                 <span className="text-energy">tomar mejores decisiones.</span>
               </h1>
@@ -75,7 +75,7 @@ export default function HomePage() {
 
         {/* ===== OCIO SERIO ===== */}
         <section className="relative overflow-hidden grain">
-          <div className="relative mx-auto max-w-7xl px-6 py-24 lg:px-8">
+          <div className="relative mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-24">
             <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
               <div>
                 <p className="font-mono text-caption uppercase tracking-[0.3em] text-naranja">
@@ -100,7 +100,7 @@ export default function HomePage() {
 
         {/* ===== 3 PILARES ===== */}
         <section className="relative overflow-hidden grain border-y border-white/10 bg-black/25 backdrop-blur-sm">
-          <div className="relative mx-auto max-w-7xl px-6 py-24 lg:px-8">
+          <div className="relative mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-24">
             <div className="max-w-3xl">
               <p className="font-mono text-caption uppercase tracking-[0.3em] text-gold">
                 Cómo lo hacemos
@@ -111,7 +111,7 @@ export default function HomePage() {
             </div>
             <ol className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-white/10 stagger-in lg:grid-cols-3">
               {PILARES.map((p) => (
-                <li key={p.numero} className="bg-[#0d1218]/80 p-10">
+                <li key={p.numero} className="bg-[#0d1218]/80 p-7 sm:p-10">
                   <span aria-hidden className="ghost-number text-7xl">
                     {p.numero}
                   </span>
@@ -135,7 +135,7 @@ export default function HomePage() {
 
         {/* ===== EJES ===== */}
         <section className="relative overflow-hidden grain">
-          <div className="relative mx-auto max-w-7xl px-6 py-24 lg:px-8">
+          <div className="relative mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-24">
             <div className="max-w-2xl">
               <p className="font-mono text-caption uppercase tracking-[0.3em] text-naranja">
                 Por dónde entrar
@@ -185,9 +185,9 @@ export default function HomePage() {
 
         {/* ===== MANAGERS LAB ===== */}
         <section className="relative overflow-hidden grain border-y border-white/10 bg-black/25 backdrop-blur-sm">
-          <div className="relative mx-auto max-w-7xl px-6 py-24 lg:px-8">
+          <div className="relative mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-24">
             <div
-              className="overflow-hidden rounded-3xl border p-10 lg:p-16"
+              className="overflow-hidden rounded-3xl border p-6 sm:p-10 lg:p-16"
               style={{ borderColor: 'rgba(0,212,255,0.35)' }}
             >
               <div className="grid gap-10 lg:grid-cols-[1.3fr_0.7fr] lg:items-center">
@@ -234,7 +234,7 @@ export default function HomePage() {
 
         {/* ===== TORNEO / BICAMPEÓN ===== */}
         <section className="relative overflow-hidden grain">
-          <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-6 py-24 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
+          <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-6 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:px-8 lg:py-24">
             <div>
               <p className="font-mono text-caption uppercase tracking-[0.3em] text-gold">
                 Pilar 03 · Gestionar el esfuerzo
