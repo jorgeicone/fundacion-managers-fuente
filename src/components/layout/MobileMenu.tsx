@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
+import { asset } from '@/lib/asset';
 import { ICONE_CYAN } from '@/lib/alianza';
 import { EJES } from '@/lib/navigation';
 
@@ -39,9 +41,13 @@ export function MobileMenu() {
       aria-label="Menú de navegación"
     >
       <div className="flex h-16 items-center justify-between border-b border-white/10 px-6">
-        <span className="font-display text-lg font-extrabold text-neutral-50">
-          Fundación Managers
-        </span>
+        <Image
+          src={asset('/logo-fundacion.png')}
+          alt="Fundación Managers"
+          width={720}
+          height={190}
+          className="h-9 w-auto"
+        />
         <button
           type="button"
           onClick={() => setOpen(false)}

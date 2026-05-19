@@ -1,6 +1,7 @@
+import Image from 'next/image';
 import Link from 'next/link';
-import { GoldCoin } from '@/components/shared/GoldCoin';
 import { MobileMenu } from '@/components/layout/MobileMenu';
+import { asset } from '@/lib/asset';
 import { ICONE_CYAN } from '@/lib/alianza';
 import { EJES } from '@/lib/navigation';
 
@@ -10,11 +11,17 @@ export function Header() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-8">
         <Link
           href="/"
-          className="flex items-center gap-3 font-display text-lg font-extrabold tracking-tight text-neutral-50"
+          className="flex items-center"
           aria-label="Inicio Fundación Managers"
         >
-          <GoldCoin size={38} />
-          <span className="hidden sm:inline">Fundación Managers</span>
+          <Image
+            src={asset('/logo-fundacion.png')}
+            alt="Fundación Managers"
+            width={720}
+            height={190}
+            priority
+            className="h-9 w-auto sm:h-10"
+          />
         </Link>
 
         <nav aria-label="Navegación principal" className="hidden lg:block">
