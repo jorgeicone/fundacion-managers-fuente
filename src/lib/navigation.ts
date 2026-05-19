@@ -25,16 +25,9 @@ export interface Eje {
   icon: LucideIcon;
 }
 
+// Orden oficial definido por Jorge (mayo 2026):
+// Torneo → Turismo → Emprendimiento → Consultoría → Eventos → Managers Rural
 export const EJES: readonly Eje[] = [
-  {
-    slug: 'consultoria',
-    nombre: 'Consultoría',
-    tagline: 'Estrategia con propósito',
-    descripcion: 'Acompañamiento estratégico a empresas y organizaciones.',
-    theme: 'light',
-    accent: 'text-gold',
-    icon: Briefcase,
-  },
   {
     slug: 'torneo',
     nombre: 'Torneo Managers',
@@ -55,15 +48,6 @@ export const EJES: readonly Eje[] = [
     icon: Plane,
   },
   {
-    slug: 'eventos',
-    nombre: 'Eventos',
-    tagline: 'Encuentros que conectan',
-    descripcion: 'Encuentros que conectan personas y proyectos.',
-    theme: 'light',
-    accent: 'text-gold',
-    icon: CalendarHeart,
-  },
-  {
     slug: 'emprendimiento',
     nombre: 'Emprendimiento',
     tagline: 'Ideas que se vuelven empresas',
@@ -71,6 +55,24 @@ export const EJES: readonly Eje[] = [
     theme: 'light',
     accent: 'text-gold',
     icon: Rocket,
+  },
+  {
+    slug: 'consultoria',
+    nombre: 'Consultoría',
+    tagline: 'Estrategia con propósito',
+    descripcion: 'Acompañamiento estratégico a empresas y organizaciones.',
+    theme: 'light',
+    accent: 'text-gold',
+    icon: Briefcase,
+  },
+  {
+    slug: 'eventos',
+    nombre: 'Eventos',
+    tagline: 'Encuentros que conectan',
+    descripcion: 'Encuentros que conectan personas y proyectos.',
+    theme: 'light',
+    accent: 'text-gold',
+    icon: CalendarHeart,
   },
   {
     slug: 'rural',

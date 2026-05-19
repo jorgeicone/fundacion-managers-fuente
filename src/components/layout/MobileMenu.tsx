@@ -30,11 +30,6 @@ export function MobileMenu() {
     };
   }, [open]);
 
-  // Torneo Managers de primero en el menú (el resto conserva su orden).
-  const ejesMenu = [...EJES].sort((a, b) =>
-    a.slug === 'torneo' ? -1 : b.slug === 'torneo' ? 1 : 0,
-  );
-
   const panel = (
     <div
       className="fixed inset-0 z-[9999] flex flex-col"
@@ -61,7 +56,7 @@ export function MobileMenu() {
         aria-label="Navegación principal móvil"
         className="flex flex-1 flex-col gap-1 overflow-y-auto px-6 py-8"
       >
-        {ejesMenu.map((eje) => (
+        {EJES.map((eje) => (
           <Link
             key={eje.slug}
             href={`/${eje.slug}/`}
