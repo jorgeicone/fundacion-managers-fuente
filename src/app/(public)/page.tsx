@@ -18,18 +18,15 @@ export default function HomePage() {
         <section className="relative overflow-hidden grain">
           <div className="relative mx-auto grid min-h-[64vh] max-w-7xl items-center gap-10 px-6 py-14 sm:py-20 lg:grid-cols-[1.2fr_0.8fr] lg:gap-14 lg:px-8 lg:py-24 lg:min-h-[78vh]">
             <div className="animate-fade-up">
-              <span className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amarillo to-naranja px-4 py-1.5 font-bufon text-xs font-bold uppercase tracking-[0.18em] text-carbon">
-                Fundación Managers · Ocio serio
-              </span>
-              <h1 className="mt-6 font-serif text-[38px] font-bold leading-[1.05] text-neutral-50 drop-shadow-[0_6px_24px_rgba(0,0,0,0.7)] sm:text-[52px] md:text-[78px]">
+              <h1 className="font-serif text-[38px] font-bold leading-[1.05] text-neutral-50 drop-shadow-[0_6px_24px_rgba(0,0,0,0.7)] sm:text-[52px] md:text-[78px]">
                 Ayudamos a líderes a{' '}
                 <span className="text-energy">tomar mejores decisiones.</span>
               </h1>
               <p className="mt-7 max-w-xl text-lg text-neutral-300">
-                Gerentes y líderes de distintas compañías se entrenan jugando, viajando,
-                aprendiendo y compitiendo. No es entretenimiento: es{' '}
-                <span className="font-semibold text-neutral-100">ocio serio</span> con un solo
-                norte.
+                Los líderes se entrenan jugando, aprendiendo y compitiendo. No es solo
+                entretenimiento: es{' '}
+                <span className="font-semibold text-neutral-100">ocio serio</span> para cumplir
+                objetivos.
               </p>
               <div className="mt-10 flex flex-wrap gap-4">
                 <Link
