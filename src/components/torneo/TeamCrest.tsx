@@ -1,104 +1,89 @@
+import Image from 'next/image';
+import { Star } from 'lucide-react';
+import { asset } from '@/lib/asset';
 import { getEquipo } from '@/lib/torneo-data';
 
 interface TeamCrestProps {
   slug: string | null;
   size?: number;
-  /** Muestra estrellas por títulos bajo el monograma. */
+  /** Muestra estrellas por títulos bajo el escudo. */
   showStars?: boolean;
 }
 
-/** Aclara/oscurece un hex para los degradados metálicos del escudo. */
-function shade(hex: string, amt: number): string {
-  const n = parseInt(hex.replace('#', ''), 16);
-  const clamp = (v: number) => Math.max(0, Math.min(255, v));
-  const r = clamp(((n >> 16) & 255) + amt);
-  const g = clamp(((n >> 8) & 255) + amt);
-  const b = clamp((n & 255) + amt);
-  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
-}
-
 /**
- * Escudo de club generado en SVG: forma de blasón, degradado metálico,
- * banda superior, monograma y estrellas por título. Coherente y premium
- * mientras llegan los escudos oficiales.
+ * Escudo de club. Usa el logo OFICIAL del equipo cuando existe en
+ * `public/escudos/<slug>.png` (todos los 8 reales están versionados).
+ * Para campeones agrega un sutil aro dorado; las estrellas aparecen
+ * abajo si `showStars`. Para slug nulo ("por definir") muestra un
+ * marcador neutro.
  */
 export function TeamCrest({ slug, size = 56, showStars = false }: TeamCrestProps) {
   const eq = slug ? getEquipo(slug) : undefined;
-  const base = eq?.color ?? '#3A3F46';
-  const light = shade(base, 46);
-  const dark = shade(base, -52);
-  const id = (eq?.slug ?? 'tbd').replace(/[^a-z0-9]/gi, '');
   const titulos = eq?.titulos ?? 0;
   const champion = titulos > 0;
+  const starSize = Math.max(10, Math.round(size * 0.18));
+
+  if (!eq) {
+    // Placeholder neutro (rival por definir).
+    return (
+      <div
+        aria-label="Por definir"
+        className="inline-flex shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/5 font-mono text-neutral-400"
+        style={{ width: size, height: size, fontSize: size * 0.34 }}
+      >
+        ?
+      </div>
+    );
+  }
 
   return (
-    <svg
-      role="img"
-      aria-label={eq ? `Escudo ${eq.nombre}` : 'Por definir'}
-      viewBox="0 0 80 96"
-      width={size}
-      height={(size * 96) / 80}
-      className="shrink-0 drop-shadow-[0_6px_14px_rgba(0,0,0,0.45)]"
-    >
-      <defs>
-        <linearGradient id={`g-${id}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={light} />
-          <stop offset="48%" stopColor={base} />
-          <stop offset="100%" stopColor={dark} />
-        </linearGradient>
-        <linearGradient id={`b-${id}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="rgba(255,255,255,0.28)" />
-          <stop offset="100%" stopColor="rgba(255,255,255,0)" />
-        </linearGradient>
-      </defs>
-
-      {/* Borde dorado para campeones / borde sutil resto */}
-      <path
-        d="M40 2 L75 14 V44 C75 68 59 84 40 94 C21 84 5 68 5 44 V14 Z"
-        fill={champion ? '#D4A437' : 'rgba(255,255,255,0.18)'}
-      />
-      {/* Cuerpo del escudo */}
-      <path
-        d="M40 6 L71 16.5 V44 C71 65.5 56.5 80.5 40 89.5 C23.5 80.5 9 65.5 9 44 V16.5 Z"
-        fill={`url(#g-${id})`}
-      />
-      {/* Banda superior */}
-      <path
-        d="M40 6 L71 16.5 V27 L40 20 L9 27 V16.5 Z"
-        fill="rgba(0,0,0,0.22)"
-      />
-      {/* Brillo superior */}
-      <path
-        d="M40 6 L71 16.5 V40 C71 30 56 22 40 22 C24 22 9 30 9 40 V16.5 Z"
-        fill={`url(#b-${id})`}
-      />
-      {/* Monograma */}
-      <text
-        x="40"
-        y="58"
-        textAnchor="middle"
-        fontFamily="var(--font-display-sport), Impact, sans-serif"
-        fontSize="26"
-        fill="#fff"
-        style={{ letterSpacing: '1px' }}
+    <div className="inline-flex shrink-0 flex-col items-center">
+      <div
+        aria-label={`Escudo ${eq.nombre}`}
+        className={
+          champion
+            ? 'relative rounded-full p-[3px]'
+            : 'relative'
+        }
+        style={
+          champion
+            ? {
+                background:
+                  'linear-gradient(135deg, #F2C75A 0%, #D4A437 50%, #8C6A1F 100%)',
+                boxShadow: '0 8px 22px rgba(212,164,55,0.35)',
+              }
+            : undefined
+        }
       >
-        {eq?.corto ?? '?'}
-      </text>
-      {/* Estrellas por título */}
+        <div
+          className="overflow-hidden rounded-full bg-[#0d1218]/80 ring-1 ring-white/10"
+          style={{ width: size, height: size }}
+        >
+          <Image
+            src={asset(`/escudos/${eq.slug}.png`)}
+            alt={`Escudo ${eq.nombre}`}
+            width={size}
+            height={size}
+            className="h-full w-full object-contain p-[8%]"
+          />
+        </div>
+      </div>
+
       {showStars && champion ? (
-        <g fill="#FFE08A">
-          {Array.from({ length: Math.min(titulos, 3) }, (_, i) => {
-            const cx = 40 + (i - (Math.min(titulos, 3) - 1) / 2) * 13;
-            return (
-              <path
-                key={i}
-                transform={`translate(${cx} 70) scale(0.42)`}
-                d="M0 -10 L2.9 -3.1 L10 -2.6 L4.5 2.1 L6.4 9 L0 5 L-6.4 9 L-4.5 2.1 L-10 -2.6 L-2.9 -3.1 Z"
-              />
-            );
-          })}
-        </g>
+        <div
+          aria-hidden
+          className="mt-2 flex items-center gap-1"
+          style={{ marginTop: Math.round(size * 0.08) }}
+        >
+          {Array.from({ length: Math.min(titulos, 3) }, (_, i) => (
+            <Star
+              key={i}
+              size={starSize}
+              className="fill-amarillo text-amarillo drop-shadow-[0_2px_6px_rgba(212,164,55,0.45)]"
+            />
+          ))}
+        </div>
       ) : null}
-    </svg>
+    </div>
   );
 }
