@@ -11,14 +11,15 @@ interface TeamCrestProps {
 }
 
 /**
- * Escudo de club: usa el logo OFICIAL (`public/escudos/<slug>.png`,
- * con fondos exteriores transparentes ya procesados).
+ * Escudo de club: usa el logo OFICIAL en `public/escudos/<slug>.png`
+ * con halo de luz tipo REFLECTOR atrás (radial gradient + blur). Es el
+ * efecto que pidió Jorge — como un artista iluminado por un spot — y
+ * resuelve que los logos con elementos oscuros (Useche, contornos
+ * negros) no se pierdan sobre el fondo oscuro del sitio. SIN marco
+ * circular ni recortes: el escudo respira con su forma original.
  *
- * Diseño: SIN marco circular oscuro que tragaba logos navy/negros y
- * apretaba los escudos. El logo se renderiza directo, ocupando todo el
- * espacio, sobre fondo transparente. Para bicampeones se añade un
- * brillo dorado por drop-shadow (no un anillo que recorte). Esto es
- * lo que hacen FIFA/Premier/Champions con sus escudos en UI.
+ * - Equipos normales: halo blanco-cálido sutil.
+ * - Bicampeón (Pomada Alfa): halo dorado más intenso + estrellas.
  */
 export function TeamCrest({ slug, size = 56, showStars = false }: TeamCrestProps) {
   const eq = slug ? getEquipo(slug) : undefined;
@@ -38,21 +39,39 @@ export function TeamCrest({ slug, size = 56, showStars = false }: TeamCrestProps
     );
   }
 
-  // Resplandor dorado solo para campeón (sin anillo que constriña).
-  const championGlow = champion
-    ? 'drop-shadow-[0_0_14px_rgba(212,164,55,0.55)] drop-shadow-[0_6px_18px_rgba(212,164,55,0.35)]'
-    : 'drop-shadow-[0_6px_14px_rgba(0,0,0,0.55)]';
+  // Halo tipo reflector: dorado intenso para campeón, cálido neutro para el resto.
+  const haloGradient = champion
+    ? 'radial-gradient(circle, rgba(245,200,90,0.55) 0%, rgba(212,164,55,0.28) 28%, rgba(212,164,55,0.08) 55%, transparent 75%)'
+    : 'radial-gradient(circle, rgba(255,247,225,0.42) 0%, rgba(255,236,180,0.18) 32%, rgba(255,236,180,0.05) 60%, transparent 78%)';
+
+  // El halo desborda el contenedor del escudo para que parezca un foco real.
+  const haloPx = Math.round(size * 1.35);
+  const haloOffset = Math.round((size - haloPx) / 2);
 
   return (
     <div className="inline-flex shrink-0 flex-col items-center">
-      <Image
-        src={asset(`/escudos/${eq.slug}.png`)}
-        alt={`Escudo ${eq.nombre}`}
-        width={size}
-        height={size}
-        className={`block h-auto w-auto object-contain ${championGlow}`}
-        style={{ maxWidth: size, maxHeight: size }}
-      />
+      <div className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>
+        <span
+          aria-hidden
+          className="pointer-events-none absolute rounded-full"
+          style={{
+            width: haloPx,
+            height: haloPx,
+            left: haloOffset,
+            top: haloOffset,
+            background: haloGradient,
+            filter: 'blur(10px)',
+          }}
+        />
+        <Image
+          src={asset(`/escudos/${eq.slug}.png`)}
+          alt={`Escudo ${eq.nombre}`}
+          width={size}
+          height={size}
+          className="relative block h-auto w-auto object-contain drop-shadow-[0_6px_14px_rgba(0,0,0,0.45)]"
+          style={{ maxWidth: size, maxHeight: size }}
+        />
+      </div>
 
       {showStars && champion ? (
         <div
