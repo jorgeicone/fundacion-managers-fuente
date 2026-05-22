@@ -11,15 +11,19 @@ interface TeamCrestProps {
 }
 
 /**
- * Escudo de club: usa el logo OFICIAL en `public/escudos/<slug>.png`
- * con halo de luz tipo REFLECTOR atrás (radial gradient + blur). Es el
- * efecto que pidió Jorge — como un artista iluminado por un spot — y
- * resuelve que los logos con elementos oscuros (Useche, contornos
- * negros) no se pierdan sobre el fondo oscuro del sitio. SIN marco
- * circular ni recortes: el escudo respira con su forma original.
+ * Escudo de club: logo OFICIAL montado sobre una "valla blanca" (panel
+ * crema redondeado) con halo de luz tipo reflector atrás. Es como si
+ * cada equipo tuviera su cartel iluminado en el estadio.
  *
- * - Equipos normales: halo blanco-cálido sutil.
- * - Bicampeón (Pomada Alfa): halo dorado más intenso + estrellas.
+ * Por qué así (Jorge, mayo 2026): los logos fueron diseñados para fondo
+ * blanco. Sobre el fondo oscuro del sitio, los elementos oscuros del
+ * logo (Useche, contornos de Alianza/TP, ball pattern) se perdían. La
+ * valla blanca devuelve a cada logo su entorno nativo de contraste, y
+ * el reflector lo integra cinematográficamente con la paleta del sitio.
+ *
+ * - Equipos normales: valla blanca + halo cálido + ring sutil dorado.
+ * - Bicampeón (Pomada Alfa): valla blanca + halo dorado intenso + ring
+ *   dorado más visible + estrellas.
  */
 export function TeamCrest({ slug, size = 56, showStars = false }: TeamCrestProps) {
   const eq = slug ? getEquipo(slug) : undefined;
@@ -31,7 +35,7 @@ export function TeamCrest({ slug, size = 56, showStars = false }: TeamCrestProps
     return (
       <div
         aria-label="Por definir"
-        className="inline-flex shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/5 font-mono text-neutral-400"
+        className="inline-flex shrink-0 items-center justify-center rounded-2xl border border-white/15 bg-white/5 font-mono text-neutral-400"
         style={{ width: size, height: size, fontSize: size * 0.34 }}
       >
         ?
@@ -39,37 +43,56 @@ export function TeamCrest({ slug, size = 56, showStars = false }: TeamCrestProps
     );
   }
 
-  // Halo tipo reflector: dorado intenso para campeón, cálido neutro para el resto.
+  // Halo (reflector) detrás de la valla. Más intenso para campeón.
   const haloGradient = champion
-    ? 'radial-gradient(circle, rgba(245,200,90,0.55) 0%, rgba(212,164,55,0.28) 28%, rgba(212,164,55,0.08) 55%, transparent 75%)'
-    : 'radial-gradient(circle, rgba(255,247,225,0.42) 0%, rgba(255,236,180,0.18) 32%, rgba(255,236,180,0.05) 60%, transparent 78%)';
+    ? 'radial-gradient(circle, rgba(245,200,90,0.55) 0%, rgba(212,164,55,0.30) 30%, rgba(212,164,55,0.10) 58%, transparent 78%)'
+    : 'radial-gradient(circle, rgba(255,247,225,0.42) 0%, rgba(255,236,180,0.18) 35%, rgba(255,236,180,0.05) 62%, transparent 80%)';
 
-  // El halo desborda el contenedor del escudo para que parezca un foco real.
-  const haloPx = Math.round(size * 1.35);
+  const haloPx = Math.round(size * 1.5);
   const haloOffset = Math.round((size - haloPx) / 2);
+
+  // Radio de la valla escalado al tamaño (esquinas más redondas en chico).
+  const radius = Math.max(8, Math.round(size * 0.16));
 
   return (
     <div className="inline-flex shrink-0 flex-col items-center">
       <div className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>
+        {/* Reflector (halo) detrás de todo */}
         <span
           aria-hidden
-          className="pointer-events-none absolute rounded-full"
+          className="pointer-events-none absolute"
           style={{
             width: haloPx,
             height: haloPx,
             left: haloOffset,
             top: haloOffset,
             background: haloGradient,
-            filter: 'blur(10px)',
+            filter: 'blur(12px)',
+            borderRadius: '50%',
           }}
         />
+
+        {/* Valla blanca (cartel) */}
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            borderRadius: radius,
+            background: 'linear-gradient(180deg, #ffffff 0%, #f4efe6 100%)',
+            boxShadow: champion
+              ? '0 10px 24px rgba(0,0,0,0.45), inset 0 0 0 2px rgba(212,164,55,0.95), inset 0 0 0 4px rgba(255,255,255,0.65)'
+              : '0 8px 18px rgba(0,0,0,0.40), inset 0 0 0 1px rgba(212,164,55,0.55)',
+          }}
+        />
+
+        {/* Logo encima de la valla */}
         <Image
           src={asset(`/escudos/${eq.slug}.png`)}
           alt={`Escudo ${eq.nombre}`}
           width={size}
           height={size}
-          className="relative block h-auto w-auto object-contain drop-shadow-[0_6px_14px_rgba(0,0,0,0.45)]"
-          style={{ maxWidth: size, maxHeight: size }}
+          className="relative block h-full w-full object-contain"
+          style={{ padding: Math.round(size * 0.08) }}
         />
       </div>
 
@@ -77,13 +100,13 @@ export function TeamCrest({ slug, size = 56, showStars = false }: TeamCrestProps
         <div
           aria-hidden
           className="flex items-center gap-1"
-          style={{ marginTop: Math.round(size * 0.06) }}
+          style={{ marginTop: Math.round(size * 0.08) }}
         >
           {Array.from({ length: Math.min(titulos, 3) }, (_, i) => (
             <Star
               key={i}
               size={starSize}
-              className="fill-amarillo text-amarillo drop-shadow-[0_2px_6px_rgba(212,164,55,0.45)]"
+              className="fill-amarillo text-amarillo drop-shadow-[0_2px_6px_rgba(212,164,55,0.55)]"
             />
           ))}
         </div>
