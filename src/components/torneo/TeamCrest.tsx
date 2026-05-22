@@ -11,20 +11,22 @@ interface TeamCrestProps {
 }
 
 /**
- * Escudo de club. Usa el logo OFICIAL del equipo cuando existe en
- * `public/escudos/<slug>.png` (todos los 8 reales están versionados).
- * Para campeones agrega un sutil aro dorado; las estrellas aparecen
- * abajo si `showStars`. Para slug nulo ("por definir") muestra un
- * marcador neutro.
+ * Escudo de club: usa el logo OFICIAL (`public/escudos/<slug>.png`,
+ * con fondos exteriores transparentes ya procesados).
+ *
+ * Diseño: SIN marco circular oscuro que tragaba logos navy/negros y
+ * apretaba los escudos. El logo se renderiza directo, ocupando todo el
+ * espacio, sobre fondo transparente. Para bicampeones se añade un
+ * brillo dorado por drop-shadow (no un anillo que recorte). Esto es
+ * lo que hacen FIFA/Premier/Champions con sus escudos en UI.
  */
 export function TeamCrest({ slug, size = 56, showStars = false }: TeamCrestProps) {
   const eq = slug ? getEquipo(slug) : undefined;
   const titulos = eq?.titulos ?? 0;
   const champion = titulos > 0;
-  const starSize = Math.max(10, Math.round(size * 0.18));
+  const starSize = Math.max(11, Math.round(size * 0.2));
 
   if (!eq) {
-    // Placeholder neutro (rival por definir).
     return (
       <div
         aria-label="Por definir"
@@ -36,44 +38,27 @@ export function TeamCrest({ slug, size = 56, showStars = false }: TeamCrestProps
     );
   }
 
+  // Resplandor dorado solo para campeón (sin anillo que constriña).
+  const championGlow = champion
+    ? 'drop-shadow-[0_0_14px_rgba(212,164,55,0.55)] drop-shadow-[0_6px_18px_rgba(212,164,55,0.35)]'
+    : 'drop-shadow-[0_6px_14px_rgba(0,0,0,0.55)]';
+
   return (
     <div className="inline-flex shrink-0 flex-col items-center">
-      <div
-        aria-label={`Escudo ${eq.nombre}`}
-        className={
-          champion
-            ? 'relative rounded-full p-[3px]'
-            : 'relative'
-        }
-        style={
-          champion
-            ? {
-                background:
-                  'linear-gradient(135deg, #F2C75A 0%, #D4A437 50%, #8C6A1F 100%)',
-                boxShadow: '0 8px 22px rgba(212,164,55,0.35)',
-              }
-            : undefined
-        }
-      >
-        <div
-          className="overflow-hidden rounded-full bg-[#0d1218]/80 ring-1 ring-white/10"
-          style={{ width: size, height: size }}
-        >
-          <Image
-            src={asset(`/escudos/${eq.slug}.png`)}
-            alt={`Escudo ${eq.nombre}`}
-            width={size}
-            height={size}
-            className="h-full w-full object-contain p-[8%]"
-          />
-        </div>
-      </div>
+      <Image
+        src={asset(`/escudos/${eq.slug}.png`)}
+        alt={`Escudo ${eq.nombre}`}
+        width={size}
+        height={size}
+        className={`block h-auto w-auto object-contain ${championGlow}`}
+        style={{ maxWidth: size, maxHeight: size }}
+      />
 
       {showStars && champion ? (
         <div
           aria-hidden
-          className="mt-2 flex items-center gap-1"
-          style={{ marginTop: Math.round(size * 0.08) }}
+          className="flex items-center gap-1"
+          style={{ marginTop: Math.round(size * 0.06) }}
         >
           {Array.from({ length: Math.min(titulos, 3) }, (_, i) => (
             <Star
