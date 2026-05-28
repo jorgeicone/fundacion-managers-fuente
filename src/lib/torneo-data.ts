@@ -181,7 +181,7 @@ export const BRACKET_2026: readonly Partido[] = [
 ] as const;
 
 /** Fecha/hora ISO del próximo partido (Colombia, UTC-5) para la cuenta regresiva. */
-export const PROXIMO_PARTIDO_ISO = '2026-05-31T07:00:00-05:00';
+export const PROXIMO_PARTIDO_ISO = '2026-05-31T11:30:00-05:00';
 
 export const CUARTOS = BRACKET_2026.filter((p) => p.fase === 'cuartos');
 export const SEMIS = BRACKET_2026.filter((p) => p.fase === 'semifinal');

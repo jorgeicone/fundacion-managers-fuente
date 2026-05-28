@@ -12,8 +12,8 @@ import {
   TORNEO_INSTAGRAM_URL,
 } from '@/lib/torneo';
 import {
-  CUARTOS,
   EQUIPOS,
+  FINAL,
   PROXIMO_PARTIDO_ISO,
   getEquipo,
 } from '@/lib/torneo-data';
@@ -26,7 +26,7 @@ const STATS = [
 ] as const;
 
 export function TorneoLanding() {
-  const proximo = CUARTOS[0]!;
+  const proximo = FINAL;
   const loc = proximo.local ? getEquipo(proximo.local) : undefined;
   const vis = proximo.visitante ? getEquipo(proximo.visitante) : undefined;
 
