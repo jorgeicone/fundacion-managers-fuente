@@ -12,7 +12,7 @@ export default function BracketPage() {
     <TorneoShell eyebrow="Tercera edición · 2026" title="La llave" active="/torneo/bracket/">
       <BracketView />
       <p className="mt-12 rounded-xl border border-dashed border-white/15 p-4 text-center text-xs uppercase tracking-widest text-neutral-500">
-        Emparejamientos según @torneo_managers · marcadores por confirmar
+        Resultados de cuartos confirmados · semifinales el 31 may 2026
       </p>
     </TorneoShell>
   );

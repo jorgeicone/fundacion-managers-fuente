@@ -1,26 +1,52 @@
 import { GoldCoin } from '@/components/shared/GoldCoin';
 import { TeamCrest } from '@/components/torneo/TeamCrest';
-import { CUARTOS, FINAL, SEMIS, getEquipo, type Partido } from '@/lib/torneo-data';
+import { CUARTOS, FINAL, SEMIS, ganadorDe, getEquipo, type Partido } from '@/lib/torneo-data';
 import { cn } from '@/lib/utils';
 
-function Slot({ slug, goles }: { slug: string | null; goles: number | null }) {
+function Slot({
+  slug,
+  goles,
+  penales,
+  ganador,
+}: {
+  slug: string | null;
+  goles: number | null;
+  penales?: number;
+  ganador?: boolean;
+}) {
   const eq = slug ? getEquipo(slug) : undefined;
   return (
     <div className="flex items-center justify-between gap-2 px-4 py-3">
       <span className="flex min-w-0 items-center gap-3">
         <TeamCrest slug={slug} size={34} />
-        <span className="truncate text-sm font-bold text-neutral-100">
+        <span
+          className={cn(
+            'truncate text-sm font-bold',
+            ganador ? 'text-amarillo' : 'text-neutral-100',
+          )}
+        >
           {eq?.nombre ?? 'Por definir'}
         </span>
       </span>
-      <span className="font-sport text-2xl tabular-nums text-neutral-500">
-        {goles ?? '–'}
+      <span className="flex items-baseline gap-1.5">
+        {penales != null ? (
+          <span className="font-mono text-[11px] text-neutral-500">({penales})</span>
+        ) : null}
+        <span
+          className={cn(
+            'font-sport text-2xl tabular-nums',
+            ganador ? 'text-amarillo' : 'text-neutral-500',
+          )}
+        >
+          {goles ?? '–'}
+        </span>
       </span>
     </div>
   );
 }
 
 function Tie({ p, highlight = false }: { p: Partido; highlight?: boolean }) {
+  const ganador = ganadorDe(p);
   return (
     <div
       className={cn(
@@ -36,9 +62,24 @@ function Tie({ p, highlight = false }: { p: Partido; highlight?: boolean }) {
           {p.fecha} · {p.hora}
         </span>
       </div>
-      <Slot slug={p.local} goles={p.golesLocal} />
+      <Slot
+        slug={p.local}
+        goles={p.golesLocal}
+        penales={p.penales?.local}
+        ganador={ganador != null && ganador === p.local}
+      />
       <div className="mx-4 h-px bg-white/10" />
-      <Slot slug={p.visitante} goles={p.golesVisitante} />
+      <Slot
+        slug={p.visitante}
+        goles={p.golesVisitante}
+        penales={p.penales?.visitante}
+        ganador={ganador != null && ganador === p.visitante}
+      />
+      {p.penales ? (
+        <p className="border-t border-white/8 px-4 py-1.5 text-center font-mono text-[10px] uppercase tracking-widest text-neutral-500">
+          Definido por penales
+        </p>
+      ) : null}
     </div>
   );
 }

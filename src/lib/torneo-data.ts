@@ -48,9 +48,24 @@ export interface Partido {
   visitante: string | null;
   golesLocal: number | null;
   golesVisitante: number | null;
+  /** Definición por penales cuando el tiempo reglamentario termina empatado. */
+  penales?: { local: number; visitante: number };
   estado: 'programado' | 'jugado' | 'en-vivo';
   /** Fechas/horas tomadas del bracket de IG; pendientes de confirmar. */
   placeholder: boolean;
+}
+
+/** Ganador de un partido jugado (considera penales en caso de empate). */
+export function ganadorDe(p: Partido): string | null {
+  if (p.estado !== 'jugado' || p.golesLocal == null || p.golesVisitante == null) {
+    return null;
+  }
+  if (p.golesLocal > p.golesVisitante) return p.local;
+  if (p.golesVisitante > p.golesLocal) return p.visitante;
+  if (p.penales) {
+    return p.penales.local > p.penales.visitante ? p.local : p.visitante;
+  }
+  return null;
 }
 
 /**
@@ -66,10 +81,10 @@ export const BRACKET_2026: readonly Partido[] = [
     hora: '10:00',
     local: 'los-pibes',
     visitante: 'useche-fc',
-    golesLocal: null,
-    golesVisitante: null,
-    estado: 'programado',
-    placeholder: true,
+    golesLocal: 5,
+    golesVisitante: 0,
+    estado: 'jugado',
+    placeholder: false,
   },
   {
     id: 'cf2',
@@ -79,10 +94,10 @@ export const BRACKET_2026: readonly Partido[] = [
     hora: '08:00',
     local: 'the-originals',
     visitante: 'managers-fc',
-    golesLocal: null,
-    golesVisitante: null,
-    estado: 'programado',
-    placeholder: true,
+    golesLocal: 5,
+    golesVisitante: 2,
+    estado: 'jugado',
+    placeholder: false,
   },
   {
     id: 'cf3',
@@ -92,10 +107,11 @@ export const BRACKET_2026: readonly Partido[] = [
     hora: '07:00',
     local: 'pomada-alfa',
     visitante: 'alianza',
-    golesLocal: null,
-    golesVisitante: null,
-    estado: 'programado',
-    placeholder: true,
+    golesLocal: 0,
+    golesVisitante: 0,
+    penales: { local: 3, visitante: 4 },
+    estado: 'jugado',
+    placeholder: false,
   },
   {
     id: 'cf4',
@@ -105,10 +121,10 @@ export const BRACKET_2026: readonly Partido[] = [
     hora: '09:00',
     local: 'yonotomo-fc',
     visitante: 'tp-fc',
-    golesLocal: null,
-    golesVisitante: null,
-    estado: 'programado',
-    placeholder: true,
+    golesLocal: 6,
+    golesVisitante: 2,
+    estado: 'jugado',
+    placeholder: false,
   },
   {
     id: 'sf1',
@@ -116,12 +132,12 @@ export const BRACKET_2026: readonly Partido[] = [
     etiqueta: 'Semifinal 1',
     fecha: '31 may 2026',
     hora: '07:00',
-    local: null,
-    visitante: null,
+    local: 'los-pibes',
+    visitante: 'the-originals',
     golesLocal: null,
     golesVisitante: null,
     estado: 'programado',
-    placeholder: true,
+    placeholder: false,
   },
   {
     id: 'sf2',
@@ -129,12 +145,12 @@ export const BRACKET_2026: readonly Partido[] = [
     etiqueta: 'Semifinal 2',
     fecha: '31 may 2026',
     hora: '08:30',
-    local: null,
-    visitante: null,
+    local: 'alianza',
+    visitante: 'yonotomo-fc',
     golesLocal: null,
     golesVisitante: null,
     estado: 'programado',
-    placeholder: true,
+    placeholder: false,
   },
   {
     id: 'fin',
@@ -152,7 +168,7 @@ export const BRACKET_2026: readonly Partido[] = [
 ] as const;
 
 /** Fecha/hora ISO del próximo partido (Colombia, UTC-5) para la cuenta regresiva. */
-export const PROXIMO_PARTIDO_ISO = '2026-05-24T10:00:00-05:00';
+export const PROXIMO_PARTIDO_ISO = '2026-05-31T07:00:00-05:00';
 
 export const CUARTOS = BRACKET_2026.filter((p) => p.fase === 'cuartos');
 export const SEMIS = BRACKET_2026.filter((p) => p.fase === 'semifinal');

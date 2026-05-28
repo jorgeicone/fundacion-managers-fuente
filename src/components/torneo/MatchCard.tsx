@@ -72,6 +72,11 @@ export function MatchCard({ p }: { p: Partido }) {
             <span className="text-lg text-gold">:</span>
             <span className="tabular-nums">{p.golesVisitante ?? '–'}</span>
           </div>
+          {p.penales ? (
+            <span className="mt-1 font-mono text-[10px] uppercase tracking-widest text-gold">
+              Pen. {p.penales.local}-{p.penales.visitante}
+            </span>
+          ) : null}
           <span className="mt-1.5 font-mono text-[10px] uppercase tracking-widest text-neutral-500">
             {p.hora}
           </span>
