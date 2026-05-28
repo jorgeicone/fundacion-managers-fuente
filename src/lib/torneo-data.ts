@@ -35,7 +35,7 @@ export function getEquipo(slug: string): Equipo | undefined {
   return EQUIPOS.find((e) => e.slug === slug);
 }
 
-export type Fase = 'cuartos' | 'semifinal' | 'final';
+export type Fase = 'cuartos' | 'semifinal' | 'tercer-puesto' | 'final';
 
 export interface Partido {
   id: string;
@@ -133,7 +133,7 @@ export const BRACKET_2026: readonly Partido[] = [
     fecha: '31 may 2026',
     hora: '07:00',
     local: 'los-pibes',
-    visitante: 'the-originals',
+    visitante: 'yonotomo-fc',
     golesLocal: null,
     golesVisitante: null,
     estado: 'programado',
@@ -145,8 +145,21 @@ export const BRACKET_2026: readonly Partido[] = [
     etiqueta: 'Semifinal 2',
     fecha: '31 may 2026',
     hora: '08:30',
-    local: 'alianza',
-    visitante: 'yonotomo-fc',
+    local: 'the-originals',
+    visitante: 'alianza',
+    golesLocal: null,
+    golesVisitante: null,
+    estado: 'programado',
+    placeholder: false,
+  },
+  {
+    id: 'tp',
+    fase: 'tercer-puesto',
+    etiqueta: 'Tercer puesto',
+    fecha: '31 may 2026',
+    hora: '10:00',
+    local: null,
+    visitante: null,
     golesLocal: null,
     golesVisitante: null,
     estado: 'programado',
@@ -172,6 +185,7 @@ export const PROXIMO_PARTIDO_ISO = '2026-05-31T07:00:00-05:00';
 
 export const CUARTOS = BRACKET_2026.filter((p) => p.fase === 'cuartos');
 export const SEMIS = BRACKET_2026.filter((p) => p.fase === 'semifinal');
+export const TERCER_PUESTO = BRACKET_2026.find((p) => p.fase === 'tercer-puesto')!;
 export const FINAL = BRACKET_2026.find((p) => p.fase === 'final')!;
 
 /** Calendario = bracket ordenado por fecha/hora. */

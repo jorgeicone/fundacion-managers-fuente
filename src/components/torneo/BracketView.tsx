@@ -1,6 +1,14 @@
 import { GoldCoin } from '@/components/shared/GoldCoin';
 import { TeamCrest } from '@/components/torneo/TeamCrest';
-import { CUARTOS, FINAL, SEMIS, ganadorDe, getEquipo, type Partido } from '@/lib/torneo-data';
+import {
+  CUARTOS,
+  FINAL,
+  SEMIS,
+  TERCER_PUESTO,
+  ganadorDe,
+  getEquipo,
+  type Partido,
+} from '@/lib/torneo-data';
 import { cn } from '@/lib/utils';
 
 function Slot({
@@ -139,6 +147,13 @@ export function BracketView() {
             <p className="text-center font-serif text-base italic text-neutral-300">
               La cuarta moneda dorada
             </p>
+          </div>
+
+          <div className="pt-2">
+            <p className="mb-1 text-center font-bufon text-sm font-bold uppercase tracking-[0.2em] text-naranja">
+              Tercer puesto
+            </p>
+            <Tie p={TERCER_PUESTO} />
           </div>
         </div>
       </div>
