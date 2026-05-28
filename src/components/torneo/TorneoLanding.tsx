@@ -267,7 +267,7 @@ export function TorneoLanding() {
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Link
-              href="/contacto/"
+              href="/torneo/inscripciones/"
               className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amarillo to-naranja px-8 py-4 text-sm font-bold text-carbon shadow-[0_12px_40px_rgba(232,114,44,0.4)] transition-all duration-200 ease-managers hover:-translate-y-0.5"
             >
               Inscribir un equipo

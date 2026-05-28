@@ -265,4 +265,5 @@ export const TORNEO_TABS: readonly SubRuta[] = [
   { href: '/torneo/calendario/', label: 'Calendario' },
   { href: '/torneo/equipos/', label: 'Equipos' },
   { href: '/torneo/estadisticas/', label: 'Estadísticas' },
+  { href: '/torneo/inscripciones/', label: 'Inscripciones' },
 ] as const;
