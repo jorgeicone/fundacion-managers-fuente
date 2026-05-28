@@ -210,9 +210,6 @@ export function TorneoLanding() {
               {Array.from({ length: CAMPEON_VIGENTE.titulos }, (_, i) => (
                 <Star key={i} size={28} className="fill-amarillo text-amarillo" aria-hidden />
               ))}
-              <span className="ml-2 font-mono text-xs uppercase tracking-widest text-neutral-500">
-                Edición 1° y 2° · 2025
-              </span>
             </div>
             <p className="mt-6 max-w-lg text-lg text-neutral-300">
               {CAMPEON_VIGENTE.descripcion} Van por la tercera estrella.

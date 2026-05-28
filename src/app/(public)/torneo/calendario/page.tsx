@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { MatchCard } from '@/components/torneo/MatchCard';
 import { TorneoShell } from '@/components/torneo/TorneoShell';
-import { CUARTOS, SEMIS, FINAL } from '@/lib/torneo-data';
+import { CUARTOS, SEMIS, TERCER_PUESTO, FINAL } from '@/lib/torneo-data';
 
 export const metadata: Metadata = {
   title: 'Calendario · Torneo Managers',
@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 const BLOQUES = [
   { titulo: 'Cuartos de final', sub: 'Ronda 1', partidos: CUARTOS },
   { titulo: 'Semifinales', sub: 'Ronda 2', partidos: SEMIS },
+  { titulo: 'Tercer puesto', sub: 'El bronce', partidos: [TERCER_PUESTO] },
   { titulo: 'Gran Final', sub: 'El título', partidos: [FINAL] },
 ] as const;
 
