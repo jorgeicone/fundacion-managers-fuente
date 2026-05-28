@@ -211,7 +211,7 @@ export function TorneoLanding() {
                 <Star key={i} size={28} className="fill-amarillo text-amarillo" aria-hidden />
               ))}
               <span className="ml-2 font-mono text-xs uppercase tracking-widest text-neutral-500">
-                Ediciones 2024 · 2025
+                Edición 1° y 2° · 2025
               </span>
             </div>
             <p className="mt-6 max-w-lg text-lg text-neutral-300">
@@ -265,8 +265,8 @@ export function TorneoLanding() {
             <span className="text-energy">la cuarta moneda?</span>
           </h2>
           <p className="mx-auto mt-6 max-w-xl text-neutral-300">
-            Inscripciones y calendario 2027 llegan pronto. Déjanos tus datos y te avisamos
-            primero.
+            Inscripciones de la Edición 4° (2026-2) llegan pronto. Déjanos tus datos y te
+            avisamos primero.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Link

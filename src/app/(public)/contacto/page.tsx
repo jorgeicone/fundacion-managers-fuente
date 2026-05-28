@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Instagram, Mail, MapPin, MessageCircle, Send } from 'lucide-react';
+import { Instagram, Mail, MapPin, MessageCircle, Phone, Send } from 'lucide-react';
 import { SectionBackdrop } from '@/components/shared/SectionBackdrop';
 import { TORNEO_INSTAGRAM, TORNEO_INSTAGRAM_URL } from '@/lib/torneo';
 
@@ -21,8 +21,16 @@ const CANALES: readonly Canal[] = [
   {
     icon: Mail,
     titulo: 'Correo',
-    valor: 'hola@fundacionmanagers.org',
+    valor: 'williammojica@fundacionmanagers.com',
     nota: 'Respondemos en menos de 48 horas hábiles.',
+    href: 'mailto:williammojica@fundacionmanagers.com',
+  },
+  {
+    icon: Phone,
+    titulo: 'Celular',
+    valor: '+57 312 629 9744',
+    nota: 'Disponible en horario laboral (hora Colombia).',
+    href: 'tel:+573126299744',
   },
   {
     icon: Instagram,
@@ -272,7 +280,7 @@ export default function ContactoPage() {
                   aria-hidden
                 />
                 El envío real se conecta con Resend en la Fase 1 del roadmap. Mientras tanto,
-                escribe a <strong>hola@fundacionmanagers.org</strong>.
+                escribe a <strong>williammojica@fundacionmanagers.com</strong>.
               </p>
             </div>
           </form>

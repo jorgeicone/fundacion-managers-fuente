@@ -13,8 +13,9 @@ export const TORNEO_BIO =
 
 export interface Edicion {
   numero: number;
-  anio: number;
-  estado: 'jugada' | 'en-curso';
+  /** Periodo semestral, ej. '2025-1'. */
+  periodo: string;
+  estado: 'jugada' | 'en-curso' | 'proxima';
   campeon?: string;
   notas?: string;
 }
@@ -22,30 +23,37 @@ export interface Edicion {
 export const EDICIONES: readonly Edicion[] = [
   {
     numero: 1,
-    anio: 2024,
+    periodo: '2025-1',
     estado: 'jugada',
     campeon: 'Pomada Alfa FC',
     notas: 'Primera edición del torneo.',
   },
   {
     numero: 2,
-    anio: 2025,
+    periodo: '2025-2',
     estado: 'jugada',
     campeon: 'Pomada Alfa FC',
     notas: 'Bicampeonato. Pomada Alfa firma la segunda estrella.',
   },
   {
     numero: 3,
-    anio: 2026,
+    periodo: '2026-1',
     estado: 'en-curso',
-    notas: 'Tercera edición — en cuartos de final.',
+    notas: 'Tercera edición — fase de semifinales.',
+  },
+  {
+    numero: 4,
+    periodo: '2026-2',
+    estado: 'proxima',
+    notas: 'Cuarta edición — inscripciones por abrir.',
   },
 ] as const;
 
 export const CAMPEON_VIGENTE = {
   equipo: 'Pomada Alfa FC',
   titulos: 2,
-  descripcion: 'Bicampeón del Torneo Managers F7 (ediciones 2024 y 2025).',
+  descripcion:
+    'Bicampeón del Torneo Managers F7 (Edición 1° 2025-1 y Edición 2° 2025-2).',
 };
 
 /** Equipos identificados en el bracket de la edición 2026. */
