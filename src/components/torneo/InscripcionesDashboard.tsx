@@ -1,12 +1,14 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Check,
   ChevronLeft,
   ChevronRight,
   Download,
+  LogOut,
   Plus,
+  RefreshCw,
   Trash2,
   Upload,
 } from 'lucide-react';
@@ -20,8 +22,31 @@ import {
   TOTAL_PASOS,
   type Inscripcion,
 } from '@/lib/inscripciones';
+import { supabase, supabaseConfigurado, type InscripcionRow } from '@/lib/supabase';
+
+function rowAInscripcion(r: InscripcionRow): Inscripcion {
+  return {
+    id: r.id,
+    equipo: r.equipo,
+    capitan: r.capitan,
+    contacto: r.contacto ?? '',
+    pasoActual: r.paso_actual,
+    pagado: r.pagado,
+    notas: r.notas ?? '',
+    creadoEn: r.creado_en,
+    actualizadoEn: r.actualizado_en,
+  };
+}
 
 export function InscripcionesDashboard() {
+  // ── Auth (solo relevante con Supabase) ───────────────────────────────
+  const [sesion, setSesion] = useState<boolean>(!supabaseConfigurado);
+  const [authListo, setAuthListo] = useState<boolean>(!supabaseConfigurado);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [authError, setAuthError] = useState('');
+
+  // ── Datos ────────────────────────────────────────────────────────────
   const [lista, setLista] = useState<Inscripcion[]>([]);
   const [cargado, setCargado] = useState(false);
   const [equipo, setEquipo] = useState('');
@@ -29,36 +54,103 @@ export function InscripcionesDashboard() {
   const [contacto, setContacto] = useState('');
   const fileRef = useRef<HTMLInputElement>(null);
 
-  // Hidrata desde localStorage solo en el cliente.
+  const modoSupabase = supabaseConfigurado && supabase != null;
+
+  // Comprobar sesión al montar (modo Supabase).
   useEffect(() => {
-    setLista(cargarInscripciones());
+    if (!modoSupabase || !supabase) return;
+    supabase.auth.getSession().then(({ data }) => {
+      setSesion(data.session != null);
+      setAuthListo(true);
+    });
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
+      setSesion(s != null);
+    });
+    return () => sub.subscription.unsubscribe();
+  }, [modoSupabase]);
+
+  const recargarSupabase = useCallback(async () => {
+    if (!supabase) return;
+    const { data, error } = await supabase
+      .from('inscripciones')
+      .select('*')
+      .order('creado_en', { ascending: true });
+    if (!error && data) {
+      setLista((data as InscripcionRow[]).map(rowAInscripcion));
+    }
     setCargado(true);
   }, []);
 
-  // Persiste cada cambio una vez hidratado.
+  // Cargar datos: Supabase (si hay sesión) o localStorage.
   useEffect(() => {
-    if (cargado) guardarInscripciones(lista);
-  }, [lista, cargado]);
+    if (modoSupabase) {
+      if (sesion) void recargarSupabase();
+      return;
+    }
+    setLista(cargarInscripciones());
+    setCargado(true);
+  }, [modoSupabase, sesion, recargarSupabase]);
 
-  function actualizar(id: string, cambios: Partial<Inscripcion>) {
+  // Persistir en localStorage solo en modo local.
+  useEffect(() => {
+    if (!modoSupabase && cargado) guardarInscripciones(lista);
+  }, [lista, cargado, modoSupabase]);
+
+  async function login(e: React.FormEvent) {
+    e.preventDefault();
+    if (!supabase) return;
+    setAuthError('');
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password,
+    });
+    if (error) setAuthError('Credenciales incorrectas.');
+  }
+
+  async function logout() {
+    if (!supabase) return;
+    await supabase.auth.signOut();
+    setLista([]);
+  }
+
+  async function actualizar(id: string, cambios: Partial<Inscripcion>) {
     setLista((prev) =>
       prev.map((i) =>
         i.id === id ? { ...i, ...cambios, actualizadoEn: new Date().toISOString() } : i,
       ),
     );
+    if (modoSupabase && supabase) {
+      const patch: Record<string, unknown> = {};
+      if ('pasoActual' in cambios) patch.paso_actual = cambios.pasoActual;
+      if ('pagado' in cambios) patch.pagado = cambios.pagado;
+      if ('notas' in cambios) patch.notas = cambios.notas;
+      await supabase.from('inscripciones').update(patch).eq('id', id);
+    }
   }
 
-  function agregar(e: React.FormEvent) {
+  async function agregar(e: React.FormEvent) {
     e.preventDefault();
     if (equipo.trim() === '' || capitan.trim() === '') return;
-    setLista((prev) => [...prev, nuevaInscripcion({ equipo, capitan, contacto })]);
+    if (modoSupabase && supabase) {
+      const { error } = await supabase.from('inscripciones').insert({
+        equipo: equipo.trim(),
+        capitan: capitan.trim(),
+        contacto: contacto.trim() || null,
+      });
+      if (!error) await recargarSupabase();
+    } else {
+      setLista((prev) => [...prev, nuevaInscripcion({ equipo, capitan, contacto })]);
+    }
     setEquipo('');
     setCapitan('');
     setContacto('');
   }
 
-  function eliminar(id: string) {
+  async function eliminar(id: string) {
     setLista((prev) => prev.filter((i) => i.id !== id));
+    if (modoSupabase && supabase) {
+      await supabase.from('inscripciones').delete().eq('id', id);
+    }
   }
 
   function descargar() {
@@ -85,6 +177,46 @@ export function InscripcionesDashboard() {
       window.alert('El archivo no tiene un formato válido de inscripciones.');
     }
     e.target.value = '';
+  }
+
+  // ── Render: pantalla de login (modo Supabase, sin sesión) ────────────
+  if (modoSupabase && !sesion) {
+    if (!authListo) {
+      return <p className="text-sm text-neutral-400">Verificando sesión…</p>;
+    }
+    return (
+      <div className="mx-auto max-w-sm rounded-3xl border border-white/10 bg-[#0b0f14]/80 p-8">
+        <h2 className="font-sport text-2xl uppercase text-neutral-50">Ingreso de administrador</h2>
+        <p className="mt-2 text-sm text-neutral-400">
+          Solo personal autorizado de la Fundación.
+        </p>
+        <form onSubmit={login} className="mt-6 space-y-4">
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Correo"
+            className="block w-full rounded-md border border-white/15 px-3 py-2.5 text-sm placeholder:text-neutral-500 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/30"
+          />
+          <input
+            type="password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Contraseña"
+            className="block w-full rounded-md border border-white/15 px-3 py-2.5 text-sm placeholder:text-neutral-500 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/30"
+          />
+          {authError ? <p className="text-xs text-red-400">{authError}</p> : null}
+          <button
+            type="submit"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-amarillo to-naranja px-7 py-3 text-sm font-bold text-carbon transition-transform hover:-translate-y-0.5"
+          >
+            Ingresar
+          </button>
+        </form>
+      </div>
+    );
   }
 
   const totalEquipos = lista.length;
@@ -115,7 +247,16 @@ export function InscripcionesDashboard() {
       <div className="rounded-3xl border border-white/10 bg-[#0b0f14]/80 p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="font-sport text-2xl uppercase text-neutral-50">Registrar equipo</h2>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
+            {modoSupabase ? (
+              <button
+                type="button"
+                onClick={recargarSupabase}
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-xs font-bold text-neutral-200 transition-colors hover:border-gold hover:text-gold"
+              >
+                <RefreshCw size={14} aria-hidden /> Actualizar
+              </button>
+            ) : null}
             <button
               type="button"
               onClick={descargar}
@@ -123,13 +264,24 @@ export function InscripcionesDashboard() {
             >
               <Download size={14} aria-hidden /> Exportar JSON
             </button>
-            <button
-              type="button"
-              onClick={abrirImportar}
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-xs font-bold text-neutral-200 transition-colors hover:border-gold hover:text-gold"
-            >
-              <Upload size={14} aria-hidden /> Importar JSON
-            </button>
+            {!modoSupabase ? (
+              <button
+                type="button"
+                onClick={abrirImportar}
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-xs font-bold text-neutral-200 transition-colors hover:border-gold hover:text-gold"
+              >
+                <Upload size={14} aria-hidden /> Importar JSON
+              </button>
+            ) : null}
+            {modoSupabase ? (
+              <button
+                type="button"
+                onClick={logout}
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-xs font-bold text-neutral-200 transition-colors hover:border-red-500/50 hover:text-red-400"
+              >
+                <LogOut size={14} aria-hidden /> Salir
+              </button>
+            ) : null}
             <input
               ref={fileRef}
               type="file"
