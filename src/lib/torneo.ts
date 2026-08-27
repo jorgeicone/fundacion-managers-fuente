@@ -50,10 +50,27 @@ export const EDICIONES: readonly Edicion[] = [
   },
 ] as const;
 
+/**
+ * Campeón vigente = quien ganó la última edición jugada (la 3.ª).
+ *
+ * OJO: no confundir con el máximo ganador. Son dos cosas distintas y el
+ * sitio las mostraba mezcladas: Pomada Alfa tiene más títulos, pero la
+ * corona vigente es de The Originals.
+ */
 export const CAMPEON_VIGENTE = {
+  slug: 'the-originals',
   equipo: 'The Originals',
   titulos: 1,
+  edicion: 3,
   descripcion: 'Vigente Campeón — 3° Edición Torneo Managers (2026-1).',
+};
+
+/** Máximo ganador histórico: más títulos acumulados, sin ser el vigente. */
+export const MAXIMO_GANADOR = {
+  slug: 'pomada-alfa',
+  equipo: 'Pomada Alfa',
+  titulos: 2,
+  descripcion: 'Máximo ganador — 2 títulos (1.ª y 2.ª edición).',
 };
 
 /** Equipos identificados en el bracket de la edición 2026. */

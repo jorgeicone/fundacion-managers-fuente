@@ -241,8 +241,8 @@ export default function HomePage() {
                 <span className="text-energy">Es decidir bajo presión.</span>
               </h2>
               <p className="mt-6 max-w-xl text-neutral-300">
-                F7 para líderes mayores de 28 años. Tres ediciones, un bicampeón vigente:{' '}
-                {CAMPEON_VIGENTE.equipo}.
+                F7 para líderes mayores de 28 años. Tres ediciones jugadas; campeón
+                vigente: {CAMPEON_VIGENTE.equipo}.
               </p>
               <Link
                 href="/torneo/"

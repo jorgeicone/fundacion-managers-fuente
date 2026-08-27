@@ -4,18 +4,23 @@ import { ArrowRight, Star, Trophy } from 'lucide-react';
 import { TeamCrest } from '@/components/torneo/TeamCrest';
 import { TorneoShell } from '@/components/torneo/TorneoShell';
 import { EQUIPOS, getEquipo } from '@/lib/torneo-data';
+import { CAMPEON_VIGENTE, MAXIMO_GANADOR } from '@/lib/torneo';
 
 export const metadata: Metadata = {
   title: 'Equipos · Torneo Managers',
-  description: 'Los ocho clubes de la tercera edición del Torneo Managers F7.',
+  description: 'Los ocho clubes de la cuarta edición del Torneo Managers F7.',
 };
 
 export default function EquiposPage() {
-  const campeon = getEquipo('pomada-alfa')!;
+  // El campeón vigente es quien ganó la última edición jugada, NO el club
+  // con más títulos. Se toma de la constante para que no vuelva a quedar
+  // un slug escrito a mano aquí.
+  const campeon = getEquipo(CAMPEON_VIGENTE.slug)!;
+  const maximoGanador = getEquipo(MAXIMO_GANADOR.slug)!;
   const resto = EQUIPOS.filter((e) => e.slug !== campeon.slug);
 
   return (
-    <TorneoShell eyebrow="Tercera edición · 2026" title="Clubes" active="/torneo/equipos/">
+    <TorneoShell eyebrow="Cuarta edición · 2026-2" title="Clubes" active="/torneo/equipos/">
       {/* Campeón destacado */}
       <Link
         href={`/torneo/equipos/${campeon.slug}/`}
@@ -29,7 +34,7 @@ export default function EquiposPage() {
           <TeamCrest slug={campeon.slug} size={170} showStars />
           <div className="text-center sm:text-left">
             <p className="flex items-center justify-center gap-2 font-bufon text-sm font-bold uppercase tracking-[0.25em] text-naranja sm:justify-start">
-              <Trophy size={18} aria-hidden /> Bicampeón vigente
+              <Trophy size={18} aria-hidden /> Campeón vigente
             </p>
             <h2 className="mt-2 font-sport text-6xl uppercase leading-none text-neutral-50 md:text-8xl">
               {campeon.nombre}
@@ -39,11 +44,32 @@ export default function EquiposPage() {
                 <Star key={i} size={24} className="fill-amarillo text-amarillo" aria-hidden />
               ))}
               <span className="ml-2 font-mono text-xs uppercase tracking-widest text-neutral-500">
-                Ediciones 2024 · 2025
+                {CAMPEON_VIGENTE.edicion}.ª edición · 2026-1
               </span>
             </div>
           </div>
         </div>
+      </Link>
+
+      {/* Máximo ganador: distinto del campeón vigente, y se dice explícito. */}
+      <Link
+        href={`/torneo/equipos/${maximoGanador.slug}/`}
+        className="group mt-6 flex items-center gap-4 rounded-2xl border border-white/10 bg-black/30 px-5 py-4 transition-colors hover:border-amarillo/40"
+      >
+        <TeamCrest slug={maximoGanador.slug} size={44} />
+        <span className="min-w-0">
+          <span className="block font-bufon text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-400">
+            Máximo ganador
+          </span>
+          <span className="block truncate text-sm font-semibold text-neutral-200">
+            {maximoGanador.nombre} · {maximoGanador.titulos} títulos
+          </span>
+        </span>
+        <span className="ml-auto flex shrink-0 items-center gap-1">
+          {Array.from({ length: maximoGanador.titulos }, (_, i) => (
+            <Star key={i} size={14} className="fill-neutral-500 text-neutral-500" aria-hidden />
+          ))}
+        </span>
       </Link>
 
       {/* Resto de clubes */}

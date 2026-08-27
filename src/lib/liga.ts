@@ -114,10 +114,10 @@ export const PARTIDOS_LIGA: readonly PartidoLiga[] = [
   { id: 'j4p4', jornada: 4, fecha: '13/08/2026', hora: '21:00', local: 'the-originals', visitante: 'la-banda-cruzada', golesLocal: 3, golesVisitante: 0, estado: 'jugado' },
 
   // Fecha 5 — domingo 23 de agosto
-  { id: 'j5p1', jornada: 5, fecha: '23/08/2026', hora: '07:00', local: 'managers-fc', visitante: 'los-pibes', golesLocal: null, golesVisitante: null, estado: 'programado' },
-  { id: 'j5p2', jornada: 5, fecha: '23/08/2026', hora: '08:00', local: 'la-banda-cruzada', visitante: 'pomada-alfa', golesLocal: null, golesVisitante: null, estado: 'programado' },
-  { id: 'j5p3', jornada: 5, fecha: '23/08/2026', hora: '09:00', local: 'the-originals', visitante: 'useche-fc', golesLocal: null, golesVisitante: null, estado: 'programado' },
-  { id: 'j5p4', jornada: 5, fecha: '23/08/2026', hora: '10:00', local: 'tp-fc', visitante: 'yonotomo-fc', golesLocal: null, golesVisitante: null, estado: 'programado' },
+  { id: 'j5p1', jornada: 5, fecha: '23/08/2026', hora: '07:00', local: 'managers-fc', visitante: 'los-pibes', golesLocal: 0, golesVisitante: 0, estado: 'jugado' },
+  { id: 'j5p2', jornada: 5, fecha: '23/08/2026', hora: '08:00', local: 'la-banda-cruzada', visitante: 'pomada-alfa', golesLocal: 2, golesVisitante: 7, estado: 'jugado' },
+  { id: 'j5p3', jornada: 5, fecha: '23/08/2026', hora: '09:00', local: 'the-originals', visitante: 'useche-fc', golesLocal: 0, golesVisitante: 1, estado: 'jugado' },
+  { id: 'j5p4', jornada: 5, fecha: '23/08/2026', hora: '10:00', local: 'tp-fc', visitante: 'yonotomo-fc', golesLocal: 0, golesVisitante: 0, estado: 'jugado' },
 
   // Fecha 6 — domingo 30 de agosto
   { id: 'j6p1', jornada: 6, fecha: '30/08/2026', hora: '07:00', local: 'pomada-alfa', visitante: 'useche-fc', golesLocal: null, golesVisitante: null, estado: 'programado' },
@@ -132,16 +132,16 @@ export const PARTIDOS_LIGA: readonly PartidoLiga[] = [
   { id: 'j7p4', jornada: 7, fecha: '06/09/2026', hora: '10:00', local: 'the-originals', visitante: 'pomada-alfa', golesLocal: null, golesVisitante: null, estado: 'programado' },
 ] as const;
 
-/** Tarjetas acumuladas hasta la Fecha 4, según el gráfico oficial. */
+/** Tarjetas acumuladas hasta la Fecha 5, según el registro de la organización. */
 export const DISCIPLINA: Readonly<Record<string, Disciplina>> = {
   'pomada-alfa': { amarillas: 3, rojas: 2 },
-  'the-originals': { amarillas: 5, rojas: 0 },
+  'the-originals': { amarillas: 7, rojas: 0 },
   'los-pibes': { amarillas: 7, rojas: 1 },
-  'tp-fc': { amarillas: 2, rojas: 0 },
+  'tp-fc': { amarillas: 5, rojas: 0 },
   'useche-fc': { amarillas: 7, rojas: 0 },
-  'yonotomo-fc': { amarillas: 5, rojas: 2 },
-  'la-banda-cruzada': { amarillas: 3, rojas: 0 },
-  'managers-fc': { amarillas: 6, rojas: 1 },
+  'yonotomo-fc': { amarillas: 6, rojas: 2 },
+  'la-banda-cruzada': { amarillas: 4, rojas: 0 },
+  'managers-fc': { amarillas: 7, rojas: 1 },
 };
 
 /**
@@ -157,52 +157,53 @@ export function puntosJuegoLimpio(fila: Pick<FilaPosicion, 'ta' | 'tr'>): number
   return fila.ta * PESO_AMARILLA + fila.tr * PESO_ROJA;
 }
 
-/** Ranking de goleadores acumulado hasta la Fecha 4. 44 anotadores, 87 goles. */
+/** Ranking de goleadores acumulado hasta la Fecha 5. 45 anotadores, 96 goles. */
 export const GOLEADORES_LIGA: readonly Goleador[] = [
   { posicion: 1, jugador: 'David Rincón', equipo: 'los-pibes', numero: 10, goles: 6 },
-  { posicion: 2, jugador: 'Andrés Ospina', equipo: 'yonotomo-fc', numero: 8, goles: 4 },
-  { posicion: 3, jugador: 'Julián Niño', equipo: 'los-pibes', numero: 21, goles: 4 },
-  { posicion: 4, jugador: 'Wilson Rubiano', equipo: 'tp-fc', numero: 99, goles: 4 },
-  { posicion: 5, jugador: 'Juan Pinzón', equipo: 'useche-fc', numero: 30, goles: 4 },
-  { posicion: 6, jugador: 'Camilo Rojas', equipo: 'pomada-alfa', numero: 22, goles: 3 },
-  { posicion: 7, jugador: 'Andrés Wilches', equipo: 'useche-fc', numero: 17, goles: 3 },
-  { posicion: 8, jugador: 'Alain Jaimes', equipo: 'the-originals', numero: 11, goles: 3 },
-  { posicion: 9, jugador: 'Yesid Malagón', equipo: 'pomada-alfa', numero: 91, goles: 3 },
-  { posicion: 10, jugador: 'Leider López', equipo: 'la-banda-cruzada', numero: 23, goles: 3 },
-  { posicion: 11, jugador: 'Germán Cruz', equipo: 'tp-fc', numero: 9, goles: 3 },
-  { posicion: 12, jugador: 'Daniel Hernández', equipo: 'pomada-alfa', numero: 4, goles: 2 },
-  { posicion: 13, jugador: 'Carlos Cepeda', equipo: 'pomada-alfa', numero: 7, goles: 2 },
-  { posicion: 14, jugador: 'Guillermo Alvira', equipo: 'yonotomo-fc', numero: 19, goles: 2 },
-  { posicion: 15, jugador: 'Jeison Malagón', equipo: 'pomada-alfa', numero: 8, goles: 2 },
+  { posicion: 2, jugador: 'Jans Nieto', equipo: 'pomada-alfa', numero: 19, goles: 5 },
+  { posicion: 3, jugador: 'Andrés Ospina', equipo: 'yonotomo-fc', numero: 8, goles: 4 },
+  { posicion: 4, jugador: 'Andrés Wilches', equipo: 'useche-fc', numero: 17, goles: 4 },
+  { posicion: 5, jugador: 'Camilo Rojas', equipo: 'pomada-alfa', numero: 22, goles: 4 },
+  { posicion: 6, jugador: 'Jeison Malagón', equipo: 'pomada-alfa', numero: 8, goles: 4 },
+  { posicion: 7, jugador: 'Juan Pinzón', equipo: 'useche-fc', numero: 30, goles: 4 },
+  { posicion: 8, jugador: 'Julián Niño', equipo: 'los-pibes', numero: 21, goles: 4 },
+  { posicion: 9, jugador: 'Wilson Rubiano', equipo: 'tp-fc', numero: 99, goles: 4 },
+  { posicion: 10, jugador: 'Alain Jaimes', equipo: 'the-originals', numero: 11, goles: 3 },
+  { posicion: 11, jugador: 'Daniel Hernández', equipo: 'pomada-alfa', numero: 4, goles: 3 },
+  { posicion: 12, jugador: 'Germán Cruz', equipo: 'tp-fc', numero: 9, goles: 3 },
+  { posicion: 13, jugador: 'Leider López', equipo: 'la-banda-cruzada', numero: 23, goles: 3 },
+  { posicion: 14, jugador: 'Yesid Malagón', equipo: 'pomada-alfa', numero: 91, goles: 3 },
+  { posicion: 15, jugador: 'Carlos Cepeda', equipo: 'pomada-alfa', numero: 7, goles: 2 },
   { posicion: 16, jugador: 'Carlos Neira', equipo: 'los-pibes', numero: 8, goles: 2 },
-  { posicion: 17, jugador: 'Omar Flórez', equipo: 'la-banda-cruzada', numero: 7, goles: 2 },
-  { posicion: 18, jugador: 'Mauricio Altamar', equipo: 'yonotomo-fc', numero: 10, goles: 2 },
-  { posicion: 19, jugador: 'Wilson Wilches', equipo: 'useche-fc', numero: 94, goles: 2 },
+  { posicion: 17, jugador: 'Daniel Delgado', equipo: 'los-pibes', numero: 14, goles: 2 },
+  { posicion: 18, jugador: 'Diego Camacho', equipo: 'la-banda-cruzada', numero: 8, goles: 2 },
+  { posicion: 19, jugador: 'Guillermo Alvira', equipo: 'yonotomo-fc', numero: 19, goles: 2 },
   { posicion: 20, jugador: 'Isnardo Zárate', equipo: 'useche-fc', numero: 19, goles: 2 },
-  { posicion: 21, jugador: 'Daniel Delgado', equipo: 'los-pibes', numero: 14, goles: 2 },
-  { posicion: 22, jugador: 'Diego Camacho', equipo: 'la-banda-cruzada', numero: 8, goles: 2 },
+  { posicion: 21, jugador: 'Jeferson Pedraza', equipo: 'the-originals', numero: 37, goles: 2 },
+  { posicion: 22, jugador: 'Mauricio Altamar', equipo: 'yonotomo-fc', numero: 10, goles: 2 },
   { posicion: 23, jugador: 'Nelson Mora', equipo: 'the-originals', numero: 8, goles: 2 },
-  { posicion: 24, jugador: 'Jans Nieto', equipo: 'pomada-alfa', numero: 19, goles: 2 },
-  { posicion: 25, jugador: 'Jeferson Pedraza', equipo: 'the-originals', numero: 37, goles: 2 },
+  { posicion: 24, jugador: 'Omar Flórez', equipo: 'la-banda-cruzada', numero: 7, goles: 2 },
+  { posicion: 25, jugador: 'Wilson Wilches', equipo: 'useche-fc', numero: 94, goles: 2 },
   { posicion: 26, jugador: 'Alfredo Tapia', equipo: 'the-originals', numero: 7, goles: 1 },
-  { posicion: 27, jugador: 'Ronald Serna', equipo: 'the-originals', numero: 43, goles: 1 },
-  { posicion: 28, jugador: 'Daniel Rodríguez', equipo: 'los-pibes', numero: 5, goles: 1 },
-  { posicion: 29, jugador: 'Jesús Amaya', equipo: 'los-pibes', numero: 9, goles: 1 },
-  { posicion: 30, jugador: 'Néstor Useche', equipo: 'useche-fc', numero: 7, goles: 1 },
+  { posicion: 27, jugador: 'Arturo Castro', equipo: 'la-banda-cruzada', numero: 51, goles: 1 },
+  { posicion: 28, jugador: 'Christian López', equipo: 'yonotomo-fc', numero: 77, goles: 1 },
+  { posicion: 29, jugador: 'Daniel Forero', equipo: 'la-banda-cruzada', numero: 9, goles: 1 },
+  { posicion: 30, jugador: 'Daniel Rodríguez', equipo: 'los-pibes', numero: 5, goles: 1 },
   { posicion: 31, jugador: 'Gustavo Páez', equipo: 'managers-fc', numero: 18, goles: 1 },
-  { posicion: 32, jugador: 'Jhon Tovaria', equipo: 'the-originals', numero: 16, goles: 1 },
-  { posicion: 33, jugador: 'Leonardo Espitia', equipo: 'tp-fc', numero: 19, goles: 1 },
-  { posicion: 34, jugador: 'Daniel Forero', equipo: 'la-banda-cruzada', numero: 9, goles: 1 },
-  { posicion: 35, jugador: 'Rafael Quilindo', equipo: 'los-pibes', numero: 28, goles: 1 },
-  { posicion: 36, jugador: 'Sebastián Galindo', equipo: 'pomada-alfa', numero: 11, goles: 1 },
-  { posicion: 37, jugador: 'Julián Garzón', equipo: 'tp-fc', numero: 4, goles: 1 },
-  { posicion: 38, jugador: 'James Guerrero', equipo: 'managers-fc', numero: 90, goles: 1 },
-  { posicion: 39, jugador: 'Juan Mejía', equipo: 'pomada-alfa', numero: 14, goles: 1 },
-  { posicion: 40, jugador: 'Christian López', equipo: 'yonotomo-fc', numero: 77, goles: 1 },
+  { posicion: 32, jugador: 'James Guerrero', equipo: 'managers-fc', numero: 90, goles: 1 },
+  { posicion: 33, jugador: 'Jesús Amaya', equipo: 'los-pibes', numero: 9, goles: 1 },
+  { posicion: 34, jugador: 'Jhon Tovaria', equipo: 'the-originals', numero: 16, goles: 1 },
+  { posicion: 35, jugador: 'Joan Jurado', equipo: 'tp-fc', numero: 17, goles: 1 },
+  { posicion: 36, jugador: 'Juan Álvarez', equipo: 'the-originals', numero: 23, goles: 1 },
+  { posicion: 37, jugador: 'Juan Mejía', equipo: 'pomada-alfa', numero: 14, goles: 1 },
+  { posicion: 38, jugador: 'Julián Garzón', equipo: 'tp-fc', numero: 4, goles: 1 },
+  { posicion: 39, jugador: 'Leonardo Espitia', equipo: 'tp-fc', numero: 19, goles: 1 },
+  { posicion: 40, jugador: 'Néstor Useche', equipo: 'useche-fc', numero: 7, goles: 1 },
   { posicion: 41, jugador: 'Nicolás Muñoz', equipo: 'managers-fc', numero: 13, goles: 1 },
-  { posicion: 42, jugador: 'William Castiblanco', equipo: 'tp-fc', numero: 3, goles: 1 },
-  { posicion: 43, jugador: 'Joan Jurado', equipo: 'tp-fc', numero: 17, goles: 1 },
-  { posicion: 44, jugador: 'Juan Álvarez', equipo: 'the-originals', numero: 23, goles: 1 },
+  { posicion: 42, jugador: 'Rafael Quilindo', equipo: 'los-pibes', numero: 28, goles: 1 },
+  { posicion: 43, jugador: 'Ronald Serna', equipo: 'the-originals', numero: 43, goles: 1 },
+  { posicion: 44, jugador: 'Sebastián Galindo', equipo: 'pomada-alfa', numero: 11, goles: 1 },
+  { posicion: 45, jugador: 'William Castiblanco', equipo: 'tp-fc', numero: 3, goles: 1 },
 ] as const;
 
 export const PARTIDOS_JUGADOS = PARTIDOS_LIGA.filter((p) => p.estado === 'jugado');
@@ -360,3 +361,72 @@ export const COLUMNAS_TABLA = [
   { key: 'dg', corto: 'DG', largo: 'Diferencia de gol' },
   { key: 'pts', corto: 'PTS', largo: 'Puntos' },
 ] as const satisfies readonly { key: keyof FilaPosicion; corto: string; largo: string }[];
+
+/**
+ * Cruces de cuartos de final, por posición en la tabla.
+ *
+ * DECISIÓN DE DISEÑO: igual que la tabla, la llave NO se escribe a mano.
+ * `derivarCuartos()` la deriva de `calcularPosiciones()`, así que cada vez
+ * que cambia la tabla —una fecha jugada, una tarjeta cargada— los cruces se
+ * recalculan solos. Es imposible que la llave contradiga a la tabla.
+ */
+export const PLANTILLA_CUARTOS = [
+  { seedLocal: 1, seedVisitante: 8, hora: '08:00' },
+  { seedLocal: 2, seedVisitante: 7, hora: '09:00' },
+  { seedLocal: 3, seedVisitante: 6, hora: '10:00' },
+  { seedLocal: 4, seedVisitante: 5, hora: '11:00' },
+] as const;
+
+/** Los cruces por siembra, para leerlos de un vistazo y verificarlos. */
+export const CRUCES_CUARTOS: readonly (readonly [number, number])[] =
+  PLANTILLA_CUARTOS.map((c) => [c.seedLocal, c.seedVisitante] as const);
+
+/** Día en que arranca la fase final de la 4ª edición. */
+export const FECHA_CUARTOS = '13/09/2026';
+
+export interface CuartoDerivado {
+  id: string;
+  /** Posición en la tabla del equipo local (el mejor sembrado). */
+  seedLocal: number;
+  /** Posición en la tabla del equipo visitante. */
+  seedVisitante: number;
+  /** slug del equipo local, o null si aún no hay 8 equipos en la tabla. */
+  local: string | null;
+  visitante: string | null;
+  fecha: string;
+  hora: string;
+}
+
+/**
+ * Deriva los cuatro cruces de cuartos de la tabla de posiciones: 1º-8º,
+ * 2º-7º, 3º-6º y 4º-5º.
+ *
+ * Devuelve siempre los cuatro cruces. Si la tabla todavía no tiene ocho
+ * clubes, los slots que falten quedan en `null` para que la UI los muestre
+ * como "Por definir" en vez de romper el build.
+ */
+export function derivarCuartos(
+  posiciones: readonly FilaPosicion[] = POSICIONES_LIGA,
+): CuartoDerivado[] {
+  const porPosicion = new Map(posiciones.map((f) => [f.posicion, f.equipo]));
+
+  return PLANTILLA_CUARTOS.map((c, i) => ({
+    id: `cuartos-${i + 1}`,
+    seedLocal: c.seedLocal,
+    seedVisitante: c.seedVisitante,
+    local: porPosicion.get(c.seedLocal) ?? null,
+    visitante: porPosicion.get(c.seedVisitante) ?? null,
+    fecha: FECHA_CUARTOS,
+    hora: c.hora,
+  }));
+}
+
+/**
+ * ¿La tabla ya es definitiva? Solo cuando se jugaron las 7 fechas.
+ *
+ * Mientras falten fechas la llave es una proyección: hay que decírselo a
+ * quien la mira, no presentarla como el cruce definitivo.
+ */
+export function tablaDefinitiva(partidos: readonly PartidoLiga[] = PARTIDOS_LIGA): boolean {
+  return partidos.every((p) => p.estado === 'jugado');
+}
